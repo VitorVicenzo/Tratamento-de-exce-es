@@ -42,21 +42,31 @@ public class Reservation {
         return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     }
 
-    public void updateDates(Date check_In, Date check_Out) {
+    public String updateDates(Date check_In, Date check_Out) {
+        Date now = new Date();
+        if (check_In.before(now) || check_Out.before(now)) {
+            return"Reservation dates for update must be future dates.";
+        } 
+        if (!check_Out.after(check_In)) {
+            return"Check-out date must be after check-in date.";
+
+        }
+
         this.check_In = check_In;
         this.check_Out = check_Out;
+        return null;
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "Room "
-        + roomNumber
-        + ", check-in: "
-        + sdf.format(check_In)
-        + ", check-out: "
-        + sdf.format(check_Out)
-        + ", "
-        + duration()
-        + " nights";
+                + roomNumber
+                + ", check-in: "
+                + sdf.format(check_In)
+                + ", check-out: "
+                + sdf.format(check_Out)
+                + ", "
+                + duration()
+                + " nights";
     }
 }
